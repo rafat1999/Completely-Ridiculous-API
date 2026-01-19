@@ -1,3 +1,4 @@
+import logging
 import textwrap
 
 from langchain.agents import create_agent
@@ -15,6 +16,8 @@ from .config import Config
 from .extensions import postgresdb
 from .mcp_client import get_mcp_client
 from .retriever_utils import get_retriever_tool
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_MODELS = {
     "openai": "gpt-4o-mini",
@@ -35,6 +38,7 @@ def _get_default_model(provider: str) -> str:
 def _build_llm(api_key, model_name):
     provider = Config.LLM_PROVIDER
     model_name = model_name or _get_default_model(provider)
+    logger.info("Using LLM provider: %s, model: %s", provider, model_name)
     if provider == "openai":
         return ChatOpenAI(api_key=api_key, model=model_name)
     if provider == "azure_openai":
