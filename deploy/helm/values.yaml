@@ -23,6 +23,9 @@ chatbotEmbeddingsDimensions: 1536
 chatbotOpenaiApiKey: ""
 openAIApiKey: "" # for backward compatibility
 
+# OpenAI Base URL (for DeepSeek or other OpenAI-compatible APIs)
+chatbotOpenaiBaseUrl: ""
+
 # Anthropic API Key
 anthropicApiKey: ""
 

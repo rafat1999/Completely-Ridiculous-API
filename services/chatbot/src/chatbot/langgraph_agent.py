@@ -40,7 +40,11 @@ def _build_llm(api_key, model_name):
     model_name = model_name or _get_default_model(provider)
     logger.info("Using LLM provider: %s, model: %s", provider, model_name)
     if provider == "openai":
-        return ChatOpenAI(api_key=api_key, model=model_name)
+        kwargs = {"api_key": api_key, "model": model_name}
+        if Config.OPENAI_BASE_URL:
+            kwargs["base_url"] = Config.OPENAI_BASE_URL
+            logger.info("Using custom OpenAI base URL: %s", Config.OPENAI_BASE_URL)
+        return ChatOpenAI(**kwargs)
     if provider == "azure_openai":
         kwargs = {
             "azure_endpoint": Config.AZURE_OPENAI_ENDPOINT,

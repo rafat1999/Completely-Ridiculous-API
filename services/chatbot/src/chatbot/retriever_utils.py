@@ -69,11 +69,14 @@ def get_embedding_function(api_key, provider: str, llm_model: str | None):
         if not api_key:
             logger.warning("OpenAI embeddings requested without API key.")
             return _zero_embeddings()
-        return OpenAIEmbeddings(
-            openai_api_key=api_key,
-            model=Config.EMBEDDINGS_MODEL
+        kwargs = {
+            "openai_api_key": api_key,
+            "model": Config.EMBEDDINGS_MODEL
             or _default_embeddings_model(embeddings_provider, llm_model),
-        )
+        }
+        if Config.OPENAI_BASE_URL:
+            kwargs["base_url"] = Config.OPENAI_BASE_URL
+        return OpenAIEmbeddings(**kwargs)
     if embeddings_provider == "azure_openai":
         if (not Config.AZURE_OPENAI_API_KEY and not Config.AZURE_AD_TOKEN) or not Config.AZURE_OPENAI_ENDPOINT:
             logger.warning("Azure OpenAI embeddings misconfigured.")
