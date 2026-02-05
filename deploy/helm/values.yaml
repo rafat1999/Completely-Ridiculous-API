@@ -52,6 +52,10 @@ awsAccessKeyId: ""
 awsSecretAccessKey: ""
 awsSessionToken: ""
 awsRegion: ""
+# AWS IAM Assume Role configuration (optional - use instead of static credentials)
+awsAssumeRoleArn: ""
+awsExternalId: ""
+awsRoleSessionName: "crapi-chatbot-session"
 
 # Google Vertex AI configuration
 googleApplicationCredentials: ""

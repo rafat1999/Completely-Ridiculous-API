@@ -41,6 +41,9 @@ data:
     AWS_SECRET_ACCESS_KEY: {{ .Values.awsSecretAccessKey | quote }}
     AWS_SESSION_TOKEN: {{ .Values.awsSessionToken | quote }}
     AWS_REGION: {{ .Values.awsRegion | quote }}
+    AWS_ASSUME_ROLE_ARN: {{ .Values.awsAssumeRoleArn | quote }}
+    AWS_EXTERNAL_ID: {{ .Values.awsExternalId | quote }}
+    AWS_ROLE_SESSION_NAME: {{ .Values.awsRoleSessionName | quote }}
     GOOGLE_APPLICATION_CREDENTIALS: {{ .Values.googleApplicationCredentials | quote }}
     VERTEX_PROJECT: {{ .Values.vertexProject | quote }}
     VERTEX_LOCATION: {{ .Values.vertexLocation | quote }}

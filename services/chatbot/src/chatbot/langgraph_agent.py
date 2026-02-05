@@ -12,6 +12,7 @@ from langchain_mistralai import ChatMistralAI
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
 
 from .agent_utils import truncate_tool_messages
+from .aws_credentials import get_bedrock_credentials_kwargs
 from .config import Config
 from .extensions import postgresdb
 from .mcp_client import get_mcp_client
@@ -57,7 +58,8 @@ def _build_llm(api_key, model_name):
             kwargs["api_key"] = Config.AZURE_OPENAI_API_KEY
         return AzureChatOpenAI(**kwargs)
     if provider == "bedrock":
-        return ChatBedrock(model_id=model_name)
+        bedrock_kwargs = get_bedrock_credentials_kwargs()
+        return ChatBedrock(model_id=model_name, **bedrock_kwargs)
     if provider == "vertex":
         return ChatVertexAI(
             model_name=model_name,

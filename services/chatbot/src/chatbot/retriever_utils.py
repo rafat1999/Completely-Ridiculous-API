@@ -11,6 +11,7 @@ from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_mistralai import MistralAIEmbeddings
 from langchain_openai import AzureOpenAIEmbeddings, OpenAIEmbeddings
 
+from .aws_credentials import get_bedrock_credentials_kwargs
 from .config import Config
 
 logger = logging.getLogger(__name__)
@@ -103,7 +104,8 @@ def get_embedding_function(api_key, provider: str, llm_model: str | None):
         if not model_id:
             logger.warning("Bedrock embedding model not configured.")
             return _zero_embeddings()
-        return BedrockEmbeddings(model_id=model_id)
+        bedrock_kwargs = get_bedrock_credentials_kwargs()
+        return BedrockEmbeddings(model_id=model_id, **bedrock_kwargs)
     if embeddings_provider == "vertex":
         vertex_model = (
             Config.EMBEDDINGS_MODEL
