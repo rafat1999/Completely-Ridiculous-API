@@ -6,8 +6,8 @@ import time
 import httpx
 from fastmcp import FastMCP
 
-from .tool_helpers import fix_array_responses_in_spec, OpenAPIRefResolver
 from .config import Config
+from .tool_helpers import OpenAPIRefResolver, fix_array_responses_in_spec
 
 # Configure logging
 logging.basicConfig(

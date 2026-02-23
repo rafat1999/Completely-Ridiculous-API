@@ -76,7 +76,8 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
           UserDetails userDetails = userDetailsService.loadUserByUsername(username);
           if (userDetails == null) {
             log.error("User not found");
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, UserMessage.INVALID_CREDENTIALS);
+            response.sendError(
+                HttpServletResponse.SC_UNAUTHORIZED, UserMessage.INVALID_CREDENTIALS);
           }
           if (userDetails.isAccountNonLocked()) {
             UsernamePasswordAuthenticationToken authentication =
@@ -100,6 +101,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
   /**
    * Handle Basic Authentication
+   *
    * @param request HttpServletRequest
    * @param response HttpServletResponse
    */
@@ -130,8 +132,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
       log.debug("Attempting Basic Auth for user: {}", email);
 
       // Authenticate using AuthenticationManager
-      Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(email, password));
+      Authentication authentication =
+          authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(email, password));
 
       // Get UserDetails and check if account is locked
       UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -149,8 +152,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
       // Set authentication in SecurityContext
       UsernamePasswordAuthenticationToken authToken =
-          new UsernamePasswordAuthenticationToken(
-              userDetails, null, userDetails.getAuthorities());
+          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
       authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
       SecurityContextHolder.getContext().setAuthentication(authToken);
 
