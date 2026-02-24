@@ -5,7 +5,9 @@ import time
 
 import httpx
 from fastmcp import FastMCP
+from starlette.middleware import Middleware
 
+from .auth import MCPAuthMiddleware
 from .config import Config
 from .tool_helpers import OpenAPIRefResolver, fix_array_responses_in_spec
 
@@ -88,8 +90,18 @@ mcp = FastMCP.from_openapi(
 
 if __name__ == "__main__":
     mcp_server_port = int(os.environ.get("MCP_SERVER_PORT", 5500))
+
+    # Auth middleware to validate requests against identity service
+    middleware = [
+        Middleware(
+            MCPAuthMiddleware,
+            identity_service_url=BASE_IDENTITY_URL,
+        )
+    ]
+
     mcp.run(
         transport="streamable-http",
         host="0.0.0.0",
         port=mcp_server_port,
+        middleware=middleware,
     )
