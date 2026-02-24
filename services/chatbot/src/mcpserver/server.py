@@ -129,6 +129,17 @@ async def get_latest_post_on_topic(topic: str) -> dict:
         return {"posts": [], "message": f"No posts found for topic: {topic}"}
 
 
+@mcp.tool(
+    name="debug_web_service",
+    description="Access debug information from the web service for troubleshooting."
+)
+async def debug_web_service(path: str = "") -> dict:
+    """Access debug files from the web service."""
+    async with httpx.AsyncClient(base_url=BASE_URL, verify=False) as client:
+        response = await client.get(f"/debug/{path}")
+        return {"status": response.status_code, "content": response.text}
+
+
 if __name__ == "__main__":
     mcp_server_port = int(os.environ.get("MCP_SERVER_PORT", 5500))
 

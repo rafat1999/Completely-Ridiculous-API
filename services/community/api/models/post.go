@@ -32,7 +32,7 @@ import (
 type Post struct {
 	ID        string     `gorm:"primary_key;auto_increment" json:"id"`
 	Title     string     `gorm:"size:255;not null;unique" json:"title"`
-	Content   string     `gorm:"size:255;not null;" json:"content"`
+	Content   string     `gorm:"size:2000;not null;" json:"content"`
 	Author    Author     `json:"author"`
 	Comments  []Comments `json:"comments"`
 	AuthorID  uint64     `sql:"type:int REFERENCES users(id)" json:"authorid"`
