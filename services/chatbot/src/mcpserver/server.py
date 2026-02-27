@@ -6,6 +6,7 @@ import time
 from importlib.metadata import version
 
 import httpx
+import uvicorn
 from fastmcp import FastMCP
 from starlette.middleware import Middleware
 
@@ -175,10 +176,10 @@ if __name__ == "__main__":
         ),
     ]
 
-    mcp.run(
-        transport="streamable-http",
+    app = mcp.streamable_http_app(middleware=middleware)
+    uvicorn.run(
+        app,
         host="0.0.0.0",
         port=mcp_server_port,
-        middleware=middleware,
         server_header=False,
     )
