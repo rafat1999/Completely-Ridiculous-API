@@ -180,4 +180,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=mcp_server_port,
         middleware=middleware,
+        server_header=False,
     )
