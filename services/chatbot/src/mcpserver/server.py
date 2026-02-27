@@ -4,6 +4,7 @@ import os
 import time
 
 import httpx
+import uvicorn
 from fastmcp import FastMCP
 from starlette.middleware import Middleware
 
@@ -143,12 +144,31 @@ async def debug_web_service(path: str = "") -> dict:
 if __name__ == "__main__":
     mcp_server_port = int(os.environ.get("MCP_SERVER_PORT", 5500))
 
+    # Middleware to add Server header with uvicorn version
+    class ServerHeaderMiddleware:
+        def __init__(self, app):
+            self.app = app
+            self.server_header = f"uvicorn/{uvicorn.__version__}"
+
+        async def __call__(self, scope, receive, send):
+            if scope["type"] == "http":
+                async def send_with_header(message):
+                    if message["type"] == "http.response.start":
+                        headers = list(message.get("headers", []))
+                        headers.append((b"server", self.server_header.encode()))
+                        message["headers"] = headers
+                    await send(message)
+                await self.app(scope, receive, send_with_header)
+            else:
+                await self.app(scope, receive, send)
+
     # Auth middleware to validate requests against identity service
     middleware = [
+        Middleware(ServerHeaderMiddleware),
         Middleware(
             MCPAuthMiddleware,
             identity_service_url=BASE_IDENTITY_URL,
-        )
+        ),
     ]
 
     mcp.run(
