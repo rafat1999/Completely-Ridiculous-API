@@ -146,7 +146,7 @@ async def debug_web_service(path: str = "") -> dict:
 if __name__ == "__main__":
     mcp_server_port = int(os.environ.get("MCP_SERVER_PORT", 5500))
 
-    # Middleware to set Server header with uvicorn version
+  
     class ServerHeaderMiddleware:
         def __init__(self, app):
             self.app = app
