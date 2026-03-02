@@ -150,7 +150,7 @@ if __name__ == "__main__":
     class ServerHeaderMiddleware:
         def __init__(self, app):
             self.app = app
-            self.server_header = f"uvicorn/{version('uvicorn')}".encode()
+            self.server_header = f"FastMCP/{version('FastMCP')}".encode()
 
         async def __call__(self, scope, receive, send):
             if scope["type"] == "http":
