@@ -241,7 +241,6 @@ mailhog:
   replicaCount: 1
   minReadySeconds: 10
   progressDeadlineSeconds: 600
-  namespace: {{ .Release.Namespace }}
   smtpService:
     name: mailhog
     labels:
